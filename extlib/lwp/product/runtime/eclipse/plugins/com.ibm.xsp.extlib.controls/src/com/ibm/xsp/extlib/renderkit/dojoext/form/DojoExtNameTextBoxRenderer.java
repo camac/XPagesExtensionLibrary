@@ -16,9 +16,15 @@
 
 package com.ibm.xsp.extlib.renderkit.dojoext.form;
 
+import java.io.IOException;
+import java.util.Map;
+
 import javax.faces.context.FacesContext;
 
+import com.ibm.commons.util.StringUtil;
 import com.ibm.xsp.dojo.FacesDojoComponent;
+import com.ibm.xsp.extlib.component.dojoext.form.UIDojoExtNameTextBox;
+import com.ibm.xsp.extlib.renderkit.dojo.DojoRendererUtil;
 import com.ibm.xsp.extlib.resources.ExtLibResources;
 import com.ibm.xsp.resource.DojoModuleResource;
 
@@ -34,4 +40,23 @@ public class DojoExtNameTextBoxRenderer extends DojoExtListTextBoxRenderer {
     protected DojoModuleResource getDefaultDojoModule(FacesContext context, FacesDojoComponent component) {
         return ExtLibResources.extlibNameTextBox;
     }
+
+	@Override
+	protected void initDojoAttributes(FacesContext context,
+			FacesDojoComponent dojoComponent, Map<String, String> attrs)
+			throws IOException {
+		
+		super.initDojoAttributes(context, dojoComponent, attrs);
+		
+        if (dojoComponent instanceof UIDojoExtNameTextBox) {
+        	UIDojoExtNameTextBox c = (UIDojoExtNameTextBox)dojoComponent;
+        	String msep = c.getMultipleSeparator();
+        	if (!StringUtil.equals(msep, ",")) {
+        		DojoRendererUtil.addDojoHtmlAttributes(attrs, "msep", msep);
+        	}
+        }
+		
+	}
+    
+    
 }
