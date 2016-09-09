@@ -1,5 +1,5 @@
 /*
- * © Copyright IBM Corp. 2010, 2013
+ * © Copyright IBM Corp. 2010, 2013, 2015
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -57,6 +57,18 @@ public class FormTableRenderer extends FormLayoutRenderer {
             case PROP_ERRORROWSTYLE:    return "padding: 0 25px;"; //$NON-NLS-1$
             case PROP_ERRORROWSTYLENESTED: return "padding-left:15px;"; //$NON-NLS-1$ 
             case PROP_ERRORROWSTYLENESTED_RTL: return "padding-right:15px;"; //$NON-NLS-1$ 
+            
+            //Commonly used Strings 
+            case PROP_ERRORSUMMARYMAINTEXT:     return "Please check the following:"; // $NLS-FormTableRenderer.Pleasecheckthefollowing-1$
+            case PROP_ERRORIMGALT:              return "Error"; // $NLS-FormTableRenderer.Error-1$
+            case PROP_ERRORMSGALTTEXT:          return "Error:"; // $NLS-FormTableRenderer.Error.1-1$
+            case PROP_FATALMSGALTTEXT:          return "Fatal:"; // $NLS-FormTableRenderer.Fatal-1$
+            case PROP_WARNIMGALT:               return "Warning"; // $NLS-FormTableRenderer.Warning-1$
+            case PROP_WARNMSGALTTEXT:           return "Warning:"; // $NLS-FormTableRenderer.Warning.1-1$
+            case PROP_INFOIMGALT:               return "Information"; // $NLS-FormTableRenderer.Information-1$
+            case PROP_INFOMSGALTTEXT:           return "Information:"; // $NLS-FormTableRenderer.Information.1-1$
+            case PROP_HELPIMGALT:               return "Help"; // $NLS-FormTableRenderer.Help-1$
+            case PROP_HELPMSGALTTEXT:           return "Help"; // $NLS-FormTableRenderer.Help-1$
         }
         return super.getProperty(prop);
     }
@@ -103,6 +115,39 @@ public class FormTableRenderer extends FormLayoutRenderer {
                 return false;
             }
             return true;
+        }
+        public boolean hasLabelControl(){
+            String pos = getLabelPosition();
+            if( "none".equals(pos) ){ // $NON-NLS-1$
+                return false;
+            }
+            
+            String labelValue = rowControl.getLabel();
+            UIComponent labelFacet = rowControl.getFacet("label"); // $NON-NLS-1$
+            if(StringUtil.isEmpty(labelValue) && null == labelFacet){
+                return false;
+            }
+            
+            return true;
+        }
+        public boolean hasHelpControl(){
+            if(!formControl.isFieldHelp()){
+                return false;
+            }
+            
+            String helpId = rowControl.getHelpId();
+            UIComponent helpFacet = rowControl.getFacet("help"); // $NON-NLS-1$
+            if(StringUtil.isEmpty(helpId) && null == helpFacet){
+                return false;
+            }
+            
+            return true;
+        }
+        public boolean isFormNested(){
+            if(this.formData != null) {
+                return this.formData.isNested();
+            }
+            return false;
         }
     }
     protected ComputedRowData createRowData(FacesContext context, FormLayout formControl, ComputedFormData formData, UIFormLayoutRow rowControl){
@@ -384,12 +429,14 @@ public class FormTableRenderer extends FormLayoutRenderer {
         int count = children.size();
         
         // Calculate if the layout has multiple columns
-        formData.colCount = 0; int colCount = 0;
+        formData.colCount = 0;
+        int colCount = 0;
         for(int i=0; i<count; i++) {
             UIComponent child = children.get(i);
             if(child instanceof UIFormLayoutColumn) {
                 int colspan = Math.max(1,((UIFormLayoutColumn)child).getColSpan());
-                colCount+=colspan; formData.colCount=Math.max(colCount, formData.colCount);
+                colCount+=colspan;
+                formData.colCount=Math.max(colCount, formData.colCount);
             } else if(child instanceof UIFormLayoutRow) {
                 colCount=0;
             }

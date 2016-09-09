@@ -31,6 +31,7 @@ import com.ibm.xsp.component.FacesComponent;
 import com.ibm.xsp.component.FacesDataIterator;
 import com.ibm.xsp.component.UIDataEx;
 import com.ibm.xsp.event.PagerEvent;
+import com.ibm.xsp.extlib.event.ExtlibPagerEvent;
 import com.ibm.xsp.extlib.stylekit.StyleKitExtLibDefault;
 import com.ibm.xsp.page.FacesComponentBuilder;
 import com.ibm.xsp.stylekit.ThemeControl;
@@ -55,6 +56,15 @@ public class AbstractPager extends UIPanel implements FacesComponent, ThemeContr
     public static final String PAGER_ADDROWS_DEFAULT_ROWCOUNT_PROPERTY = "xsp.pager.addrows.defaultRowCount"; //$NON-NLS-1$
     public static final String PAGER_ADDROWS_DEFAULT_ROWCOUNT_DEFVAL = String.valueOf(UIDataEx.DEFAULT_ROWS_PER_PAGE); //$NON-NLS-1$
 
+    //>tmg:a11y
+    /**
+     * This is the key of a value stored in the attributes map and not a clientId suffix,
+     * nor is it an actual clientId.  It is used to maintain the currently focused pager
+     * link during partial paging interactions.
+     */
+    public static final String PAGER_CLIENT_ID = "__pagerClientId__"; //$NON-NLS-1$
+    //<tmg:a11y
+
     protected int defaultRowCount;
     
 	private String _for;
@@ -63,7 +73,7 @@ public class AbstractPager extends UIPanel implements FacesComponent, ThemeContr
 	private String refreshId;
     private String style;
     private String styleClass;
-
+    private String title;
     private String ariaLabel;
 
 	private transient FacesDataIterator dataIterator;
@@ -194,6 +204,21 @@ public class AbstractPager extends UIPanel implements FacesComponent, ThemeContr
 		}
 	}
 
+	public String getTitle() {
+		if (null != this.title) {
+			return this.title;
+		}
+		ValueBinding _vb = getValueBinding("title"); //$NON-NLS-1$
+		if (_vb != null) {
+			return (java.lang.String) _vb.getValue(FacesContext.getCurrentInstance());
+		} else {
+			return null;
+		}
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	public void setAriaLabel(java.lang.String ariaLabel) {
 		this.ariaLabel = ariaLabel;
 	}
@@ -269,8 +294,17 @@ public class AbstractPager extends UIPanel implements FacesComponent, ThemeContr
 	public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
         if (event instanceof PagerEvent) {
-            // Tell JSF to switch to render response, like regular commands
+            //>tmg:a11y
+            PagerEvent pe = (PagerEvent) event;
             FacesContext context = getFacesContext();
+            if( pe instanceof ExtlibPagerEvent ){
+                String focusClientId = ((ExtlibPagerEvent)pe).getClientId();
+                if( null != focusClientId ){
+                    HtmlUtil.storeEncodeParameter(context, this, PAGER_CLIENT_ID, focusClientId);
+                }
+            }
+            //<tmg:a11y
+            
             context.renderResponse();
         }
     }
@@ -298,11 +332,12 @@ public class AbstractPager extends UIPanel implements FacesComponent, ThemeContr
 		this.style = (String)values[5];
 		this.styleClass = (String)values[6];
 		this.ariaLabel = (String)values[7];
+		this.title = (String)values[8];	
 	}
 
 	@Override
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[8];
+		Object values[] = new Object[9];
 		values[0] = super.saveState(context);
 	    values[1] = _for;
 	    values[2] = partialExecute;
@@ -311,6 +346,8 @@ public class AbstractPager extends UIPanel implements FacesComponent, ThemeContr
 	    values[5] = style;
 	    values[6] = styleClass;
 	    values[7] = ariaLabel;
+	    values[8] = title;
+	    
 		return values;
 	}
 	

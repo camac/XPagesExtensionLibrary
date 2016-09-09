@@ -1,5 +1,5 @@
 /*
- * © Copyright IBM Corp. 2010, 2011
+ * © Copyright IBM Corp. 2010, 2011, 2015
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -49,6 +49,23 @@ public class PagerSizesRenderer extends AbstractPagerRenderer {
     
     @Override
     protected Object getProperty(int prop) {
+        {
+            // translating some extra strings that are unused here in the extlib.control plugin,
+            // but are used in the other themes - e.g. the bootstrap DataViewRenderer.
+            String str = "";
+            str = "Show all items"; // $NLS-PagerSizesRenderer.Showallitems-1$
+            str = "Show {0} items at once"; // $NLS-PagerSizesRenderer.Show0itemsatonce-1$
+            // Note these strings are used by the xp:pager control, not the xe:pagerSizes control:
+            str = "Pager"; // $NLS-PagerRenderer.Pager-1$
+            str = "First page"; // $NLS-PagerRenderer.Firstpage-1$
+            str = "Previous page"; // $NLS-PagerRenderer.Previouspage-1$
+            str = "Next page"; // $NLS-PagerRenderer.Nextpage-1$
+            str = "Last page"; // $NLS-PagerRenderer.Lastpage-1$
+            str = "Page {0}"; // $NLS-PagerRenderer.Page0-1$
+            // end xp:pager strings
+            str.getClass(); // prevent unused variable warning
+        }// end translating extra string
+        
         switch(prop) {
             case PROP_TEXT:             return "Show {0} items per page"; // $NLS-PagerSizesRenderer.Show0itemsperpage-1$
             case PROP_ALLTEXT:          return "All"; // $NLS-PagerSizesRenderer.All-1$
@@ -235,6 +252,7 @@ public class PagerSizesRenderer extends AbstractPagerRenderer {
 
     protected void writerItemContent(FacesContext context, ResponseWriter w, UIPagerSizes pager, FacesDataIterator dataIterator, String[] sizes, int idx) throws IOException {
         int val = getItemValue(sizes[idx]);
+        System.out.println("val: " + val);
         if(val>=0) {
             int rows = dataIterator.getRows();
             boolean selected = val==rows || (val==UIPagerSizes.ALL_MAX && rows>=UIPagerSizes.ALL_MAX);
@@ -245,12 +263,25 @@ public class PagerSizesRenderer extends AbstractPagerRenderer {
                 String sourceId = clientId+"_"+val;
                 w.writeAttribute("id", sourceId,null); // $NON-NLS-1$
                 w.writeAttribute("href", "javascript:;",null); // $NON-NLS-1$ $NON-NLS-2$
+                w.writeAttribute("aria-pressed", "false", null); // $NON-NLS-1$ $NON-NLS-2$
                 setupSubmitOnClick(context, w, pager, dataIterator, clientId, sourceId);
             }
-            w.writeText(getItemString(val),null);
-            if(!selected) {
-                w.endElement("a");
+            //>tmg:a11y
+            else{
+                w.startElement("a", null);
+                w.writeAttribute("role", "button", null); // $NON-NLS-1$ $NON-NLS-2$
+                String clientId = pager.getClientId(context);
+                String sourceId = clientId+"_"+val;
+                w.writeAttribute("id", sourceId,null); // $NON-NLS-1$
+                w.writeAttribute("style", "pointer-events:none;cursor:default;color:inherit;text-decoration:none;",null); // $NON-NLS-1$ $NON-NLS-2$
+                w.writeAttribute("aria-pressed", "true", null); // $NON-NLS-1$ $NON-NLS-2$
+                w.writeAttribute("aria-disabled", "true", null); // $NON-NLS-1$ $NON-NLS-2$
+                w.writeAttribute("href", "javascript:;",null); // $NON-NLS-1$ $NON-NLS-2$
             }
+            
+            w.writeText(getItemString(val),null);
+            w.endElement("a");
+            //<tmg:a11y
         }
     }
 
