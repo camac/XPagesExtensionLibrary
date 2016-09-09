@@ -25,7 +25,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 <repository>
 <id>notes</id>
 <layout>p2</layout>
-<url>file:///V:\Projects\XPagesExtensionLibrary\UpdateSite</url>
+<url>file:///D:\Projects\DominoUpdateSite</url>
 </repository>
 </repositories>
 
