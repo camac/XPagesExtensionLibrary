@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config>
+
+	<faces-config-extension>
+		<namespace-uri>http://www.ibm.com/xsp/coreex</namespace-uri>
+		<default-prefix>xe</default-prefix>
+		<designer-extension>
+			<control-subpackage-name>theme.bootstrap.components.responsive</control-subpackage-name>
+		</designer-extension>
+	</faces-config-extension>
+
+	<component>
+
+		<description>A Control which adds 'Mention' functionality to a InputTextArea
+		</description>
+
+		<display-name>Mention</display-name>
+
+		<component-type>com.ibm.xsp.theme.bootstrap.UIMention</component-type>
+		<component-class>com.ibm.xsp.theme.bootstrap.components.mention.UIMention</component-class>
+
+		<property>
+			<description>Control Id that Mention should be attached to. Should be a inputTextArea</description>
+			<display-name>For Control Id
+			</display-name>
+			<property-name>for</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<required>true</required>
+				<designer-extension>
+					<category>basics</category>
+					<editor>com.ibm.designer.domino.xsp.idpicker
+					</editor>
+				</designer-extension>
+			</property-extension>
+		</property>
+
+		<!-- Plain Rest URL -->
+		<property>
+			<description>URL of the Rest Service that provides User Data</description>
+			<display-name>Rest URL</display-name>
+			<property-name>restUrl</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<required>true</required>
+				<designer-extension>
+					<category>restPlain</category>
+				</designer-extension>
+			</property-extension>
+		</property>
+
+		<!-- Page + PathInfo -->
+		<property>
+			<description>Page Name of the XPages Rest Service that provides User Data</description>
+			<display-name>Rest Service XPage Name</display-name>
+			<property-name>pageName</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<required>true</required>
+				<designer-extension>
+					<category>dataRestXpage</category>
+					<editor>com.ibm.workplace.designer.property.editors.PagePicker</editor>
+				</designer-extension>
+			</property-extension>
+		</property>
+		<property>
+			<description>PathInfo of the XPages Rest Service that provides User Data</description>
+			<display-name>Rest URL</display-name>
+			<property-name>pathInfo</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<required>true</required>
+				<designer-extension>
+					<category>dataRestXpage</category>
+				</designer-extension>
+			</property-extension>
+		</property>
+
+		<!-- View Auto Rest Service -->
+		<property>
+			<description>View Name to use for Automatic Rest Service</description>
+			<display-name>View Name</display-name>
+			<property-name>viewName</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<required>true</required>
+				<designer-extension>
+					<category>dataAutoRest</category>
+					<editor>com.ibm.xsp.extlib.designer.tooling.editor.ViewNameEditor</editor>
+				</designer-extension>
+			</property-extension>
+		</property>
+		<property>
+			<description>Database Name to use for Automatic Rest Service</description>
+			<display-name>Database Name</display-name>
+			<property-name>databaseName</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<required>true</required>
+				<designer-extension>
+					<category>dataAutoRest</category>
+				</designer-extension>
+			</property-extension>
+		</property>
+		<property>
+			<description>Programmatic Name of UserName Column</description>
+			<display-name>User Name Column Name</display-name>
+			<property-name>userNameColumnName</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<required>true</required>
+				<designer-extension>
+					<category>dataAutoRest</category>
+				</designer-extension>
+			</property-extension>
+		</property>
+		<property>
+			<description>Programmatic Name of Name Column</description>
+			<display-name>Name Column Name</display-name>
+			<property-name>nameColumnName</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<required>true</required>
+				<designer-extension>
+					<category>dataAutoRest</category>
+				</designer-extension>
+			</property-extension>
+
+		</property>
+		<property>
+			<description>Programmatic Name of Image Column</description>
+			<display-name>Image Column Name</display-name>
+			<property-name>imageColumnName</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<required>true</required>
+				<designer-extension>
+					<category>dataAutoRest</category>
+				</designer-extension>
+			</property-extension>
+		</property>
+
+
+		<component-extension>
+
+			<component-family>javax.faces.Output</component-family>
+
+			<tag-name>mention</tag-name>
+
+			<designer-extension>
+				<in-palette>true</in-palette>
+				<category>Responsive</category>
+				<render-markup>&lt;?xml version="1.0"
+					encoding="UTF-8"?&gt;&#xd;
+					&lt;xp:view
+					xmlns:xp="http://www.ibm.com/xsp/core"&gt;&#xd;
+					&#xd;
+					&lt;xp:label
+					value="Mention"
+					id="label1"&#xd;
+					style="background-color:rgb(60,158,3)"&gt;&lt;/xp:label&gt;&#xd;
+					&lt;/xp:view&gt;</render-markup>
+
+			</designer-extension>
+
+		</component-extension>
+
+	</component>
+
+</faces-config>
