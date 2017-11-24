@@ -5,7 +5,9 @@ dojo.provide("extlib.dijit.MasterCheckbox");
 dojo.require("dijit._WidgetBase");
 dojo.require("dojo.io.script");
 dojo.require("dojo.NodeList-manipulate");
+dojo.require("dojo.NodeList-traverse");
 dojo.require("dojo.dom-class");
+dojo.require("dojo.dom-style");
 
 dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 
@@ -23,15 +25,20 @@ dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 
 		var cbs = this.checkboxes();
 
-		cbs.each(function() {
+		dojo.forEach(cbs, function(cb) {
+			
+			var cbid = dojo.getAttr(cb,'id');
+			var elem = cb;
 
-			var cbid = $(this).attr('id');
-			var elem = $(this)[0];
+			XSP.attachClientFunction(cbid, 'onclick', function(event) {
+				event.stopPropagation = true;
+			});
 
 			XSP.attachClientFunction(cbid, 'onchange', function(event) {
 
 				context.updateMaster();
 				context.updateParentStyle(elem);
+
 
 			});
 
@@ -39,16 +46,18 @@ dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 			
 			if (context.parentSelectorClick) {
 				
-				var parentClick = $(elem).closest(context.parentSelectorClick);
+				var parentClick = dojo.query(elem).closest(context.parentSelectorClick);
 				
-				parentClick.css('cursor', 'pointer');
+				dojo.setStyle(parentClick, 'cursor', 'pointer');
 
-				parentClick.click(function() {
+				parentClick.onclick(function() {
 
-					if ($(elem).prop('checked')) {
-						$(elem).prop('checked', false);
+					var ischecked = dojo.getAttr(elem, 'checked');
+					
+					if (ischecked) {
+						dojo.setAttr(elem, 'checked', false);
 					} else {
-						$(elem).prop('checked', true);
+						dojo.setAttr(elem, 'checked', true);
 					}
 
 					context.updateParentStyle(elem);
@@ -68,15 +77,26 @@ dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 	updateParentStyle : function(elem) {
 
 		if (this.parentSelectorStyleClass) {
-		
-			var parent = $(elem).closest(this.parentSelectorStyleClass);
 
-			if ($(elem).prop('checked')) {
-				parent.addClass(this.parentStyleClassChecked);
-				parent.removeClass(this.parentStyleClassUnchecked);
+			var parent = dojo.query(elem).closest(this.parentSelectorStyleClass)[0];
+			
+			var checked = dojo.getAttr(elem, 'checked');
+			
+			console.log(this.parentStyleClassChecked);
+			
+			if (checked) {
+				
+				if (this.parentStyleClassChecked) {
+					dojo.addClass(parent, this.parentStyleClassChecked);
+				}
+
+				if (this.parentStyleClassUnchecked) {
+					dojo.removeClass(parent, this.parentStyleClassUnchecked);				
+				}
+				
 			} else {
-				parent.removeClass(this.parentStyleClassChecked);
-				parent.addClass(this.parentStyleClassUnchecked);
+				dojo.removeClass(parent, this.parentStyleClassChecked);
+				dojo.addClass(parent, this.parentStyleClassUnchecked);
 			}
 						
 		}
@@ -86,14 +106,18 @@ dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 
 	updateMaster : function() {
 
-		var cb = x$(this.masterId);
+		var cb = dojo.byId(this.masterId);
+				
 		var cbs = this.checkboxes();
 
 		var somethingchecked = false;
 		var somethingunchecked = false;
 
-		cbs.each(function() {
-			if ($(this).prop('checked')) {
+		dojo.forEach(cbs, function(cb) {
+			
+			var cbchecked = dojo.getAttr(cb, 'checked');
+			
+			if (cbchecked) {
 				somethingchecked = true;
 			} else {
 				somethingunchecked = true;
@@ -101,17 +125,20 @@ dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 		});
 
 		if (somethingunchecked && somethingchecked) {
-			cb.prop('checked', false);
-			cb.prop('indeterminate', true);
-			//console.log('set indeterminate');
+			
+			dojo.setAttr(cb,'checked', false);
+			dojo.setAttr(cb,'indeterminate', true);
+			
 		} else if (somethingchecked) {
-			cb.prop('indeterminate', false);
-			cb.prop('checked', true);
-			//console.log('set true');
+			
+			dojo.setAttr(cb,'indeterminate', false);
+			dojo.setAttr(cb,'checked', true);
+			
 		} else {
-			cb.prop('indeterminate', false);
-			cb.prop('checked', false);
-			//console.log('set false');
+
+			dojo.setAttr('indeterminate', false);
+			dojo.setAttr('checked', false);
+
 		}
 
 	},
@@ -123,25 +150,37 @@ dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 		var somethingchecked = false;
 		var somethingunchecked = false;
 
-		cbs.each(function() {
-			if ($(this).prop('checked')) {
+		dojo.forEach(cbs, function(cb) {
+			
+			var cbchecked = dojo.getAttr(cb, 'checked');
+			
+			if (cbchecked) {
 				somethingchecked = true;
 			} else {
 				somethingunchecked = true;
 			}
+			
 		});
 
 		if (somethingunchecked) {
-			cbs.prop('checked', true);
+			
+			dojo.forEach(cbs, function(cb){
+				dojo.setAttr(cb,'checked',true);	
+			});
+			
+			
 		} else if (somethingchecked) {
-			cbs.prop('checked', false);
+
+			dojo.forEach(cbs, function(cb){
+				dojo.setAttr(cb,'checked',false);
+			});
+			
 		}
 
 		var context = this;
 
-		cbs.each(function() {
-			var elem = $(this)[0];
-			context.updateParentStyle(elem);
+		dojo.forEach(cbs, function(cb) {
+			context.updateParentStyle(cb);
 		});
 
 		this.updateMaster();
@@ -149,15 +188,22 @@ dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 	},
 
 	checkboxes : function() {
-		return $('[name="' + this.id + '"]');
+		return dojo.query('[name="' + this.id + '"]');
 	},
 
 	selectAll : function() {
-		this.checkboxes().prop('checked', true);
+		
+		var cbs = this.checkboxes();
+		dojo.setAttr(cbs, 'checked', true);
+		
 	},
 
 	deselectAll : function() {
-		this.checkboxes().prop('checked', false);
+
+		var cbs = this.checkboxes();
+		dojo.setAttr(cbs, 'checked', false);
+
+		
 	},
 
 });
