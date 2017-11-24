@@ -31,7 +31,7 @@ public abstract class AbstractWizard extends Wizard implements IPageChangingList
     
     public IDominoDesignerProject    project    = null;
     public boolean                   advancing  = true;
-    protected final ImageDescriptor  _image;
+    public final ImageDescriptor  _image;
 
     public AbstractWizard(ImageDescriptor image) {
         super();
