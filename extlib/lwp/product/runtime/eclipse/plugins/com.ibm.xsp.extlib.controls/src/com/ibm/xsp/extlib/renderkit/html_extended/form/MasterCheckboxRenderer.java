@@ -150,7 +150,7 @@ public class MasterCheckboxRenderer extends SelectManyCheckboxListRenderer {
 
 		try {
 
-			sb.append("new horizon.dijit.MasterCheckbox("
+			sb.append("new extlib.dijit.MasterCheckbox("
 					+ JsonGenerator.toJson(JsonJavaFactory.instanceEx, params, false) + ");");
 
 		} catch (JsonException e) {

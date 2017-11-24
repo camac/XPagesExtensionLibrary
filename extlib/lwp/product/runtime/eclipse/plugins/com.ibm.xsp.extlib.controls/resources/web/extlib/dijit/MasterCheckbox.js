@@ -1,13 +1,13 @@
 "use strict"; // Turns bad habits into errors :)
 
-dojo.provide("horizon.dijit.MasterCheckbox");
+dojo.provide("extlib.dijit.MasterCheckbox");
 
 dojo.require("dijit._WidgetBase");
 dojo.require("dojo.io.script");
 dojo.require("dojo.NodeList-manipulate");
 dojo.require("dojo.dom-class");
 
-dojo.declare('horizon.dijit.MasterCheckbox', dijit._WidgetBase, {
+dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 
 	constructor : function(args) {
 

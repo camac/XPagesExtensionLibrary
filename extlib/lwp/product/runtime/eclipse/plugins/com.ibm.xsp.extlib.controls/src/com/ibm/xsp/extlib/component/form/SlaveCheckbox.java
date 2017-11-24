@@ -8,6 +8,7 @@ import com.ibm.xsp.component.xp.XspInputCheckbox;
 public class SlaveCheckbox extends XspInputCheckbox  {
 
 	public static final String RENDERER_TYPE = "com.ibm.xsp.extlib.SlaveCheckbox";
+	public static final String STYLEKIT_FAMILY = "SlaveCheckbox";
 	
 	private String master;
 
@@ -30,6 +31,13 @@ public class SlaveCheckbox extends XspInputCheckbox  {
 
 		return null;
 
+	}
+	
+	
+
+	@Override
+	public String getStyleKitFamily() {
+		return STYLEKIT_FAMILY;
 	}
 
 	public void setMaster(String master) {
