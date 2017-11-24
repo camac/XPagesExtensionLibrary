@@ -31,7 +31,7 @@ dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 			var elem = cb;
 
 			XSP.attachClientFunction(cbid, 'onclick', function(event) {
-				event.stopPropagation = true;
+				event.cancelBubble = true;
 			});
 
 			XSP.attachClientFunction(cbid, 'onchange', function(event) {
