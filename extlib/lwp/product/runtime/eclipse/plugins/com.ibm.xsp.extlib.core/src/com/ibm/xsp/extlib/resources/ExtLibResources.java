@@ -125,6 +125,8 @@ public class ExtLibResources {
     public static final DojoModuleResource dijitLayoutStackContainer = new DojoModuleResource("dijit.layout.StackContainer"); // $NON-NLS-1$
     public static final DojoModuleResource dijitLayoutTabContainer = new DojoModuleResource("dijit.layout.TabContainer");   // $NON-NLS-1$
     
+    public static final DojoModuleResource dijitMasterCheckbox = new DojoModuleResource("dijit.form.MasterCheckbox");
+    
     public static final DojoModuleResource dojoxGridDataGrid = new DojoModuleResource("dojox.grid.DataGrid"); // $NON-NLS-1$
     public static final DojoModuleResource dojoIFrameAdjuster = new DojoModuleResource("extlib.dojo.helper.IFrameAdjuster"); // $NON-NLS-1$
 
@@ -190,6 +192,8 @@ public class ExtLibResources {
     public static final DojoModuleResource extlibImageSelect = new DojoModuleResource("extlib.dijit.ImageSelect");   // $NON-NLS-1$
     public static final DojoModuleResource extlibDataIterator = new DojoModuleResource("extlib.dijit.DataIterator");   // $NON-NLS-1$
     public static final DojoModuleResource extlibScrollablePane = new DojoModuleResource("extlib.dijit.mobile.ScrollablePane");   // $NON-NLS-1$
+    
+    public static final DojoModuleResource extlibMasterCheckbox = new DojoModuleResource("extlib.dijit.MasterCheckbox"); // $NON-NLS-1$
     
     public static final DojoModuleResource extlibMobile = new DojoModuleResource("extlib.dijit.Mobile");   // $NON-NLS-1$
     

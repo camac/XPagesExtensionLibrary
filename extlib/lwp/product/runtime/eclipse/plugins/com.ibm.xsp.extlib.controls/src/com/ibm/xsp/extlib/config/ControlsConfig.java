@@ -44,6 +44,7 @@ public class ControlsConfig extends ExtlibPluginConfig {
 			"com/ibm/xsp/extlib/config/extlib-tooltip-faces-config.xml", // $NON-NLS-1$
 			"com/ibm/xsp/extlib/config/extlib-misc-faces-config.xml", // $NON-NLS-1$
 			"com/ibm/xsp/extlib/config/extlib-beans-faces-config.xml", // $NON-NLS-1$
+			"com/ibm/xsp/extlib/config/extlib-mastercheckbox-faces-config.xml", // $NON-NLS-1$
 		});
 	}	
 
@@ -75,6 +76,7 @@ public class ControlsConfig extends ExtlibPluginConfig {
 			"com/ibm/xsp/extlib/config/extlib-layout.xsp-config", // $NON-NLS-1$
 			"com/ibm/xsp/extlib/config/extlib-misc.xsp-config", // $NON-NLS-1$
 			"com/ibm/xsp/extlib/config/extlib-redirect.xsp-config", // $NON-NLS-1$
+			"com/ibm/xsp/extlib/config/extlib-mastercheckbox.xsp-config", // $NON-NLS-1$
 		});
 	}
 }
