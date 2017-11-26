@@ -48,7 +48,7 @@ dojo.declare('extlib.dijit.MasterCheckbox', dijit._WidgetBase, {
 				
 				var parentClick = dojo.query(elem).closest(context.parentSelectorClick);
 				
-				dojo.setStyle(parentClick, 'cursor', 'pointer');
+				dojo.setStyle(parentClick[0], 'cursor', 'pointer');
 
 				parentClick.onclick(function() {
 
